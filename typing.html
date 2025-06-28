@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Typing Test</title></head>
+<body>
+<h2>Typing Speed Test</h2>
+<p id="sentence"></p>
+<input type="text" id="input" oninput="checkTyping()" />
+<p id="score">Correct: 0</p>
+<p id="timer"></p>
+<script>
+const sentences = ["Hello world", "Practice makes perfect", "JavaScript is fun", "Spin the wheel", "Typing is cool"];
+let score = 0, time = 60, current;
+
+function newSentence() {
+  current = sentences[Math.floor(Math.random() * sentences.length)];
+  document.getElementById("sentence").innerText = current;
+  document.getElementById("input").value = "";
+}
+
+function checkTyping() {
+  if (document.getElementById("input").value === current) {
+    score++;
+    document.getElementById("score").innerText = "Correct: " + score;
+    newSentence();
+  }
+}
+
+newSentence();
+
+let interval = setInterval(() => {
+  document.getElementById("timer").innerText = "⏳ Time: " + time-- + "s";
+  if (time < 0) {
+    clearInterval(interval);
+    alert("⏱️ Time's up! Your score: " + score);
+  }
+}, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memory Match</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #e0f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 30px auto;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #ccc;
+      font-size: 2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.3s;
+      border-radius: 10px;
+    }
+    .flipped {
+      background-color: #fff;
+    }
+    .matched {
+      background-color: #81c784;
+      cursor: default;
+    }
+    .result {
+      font-size: 1.5em;
+      margin-top: 20px;
+    }
+    .winner {
+      animation: pulse 1s infinite;
+      color: green;
+    }
+    .loser {
+      animation: shake 0.5s infinite;
+      color: red;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+  </style>
+</head>
+<body>
+  <h2>🧠 Memory Match</h2>
+  <p>Match all pairs before time runs out!</p>
+  <div id="board"></div>
+  <p id="score">Matches: 0</p>
+  <p id="timer">⏳ Time: 60s</p>
+  <div class="result" id="resultText"></div>
+
+  <script>
+    const emojis = ['🍎','🍌','🍇','🍉','🍓','🍒','🥝','🍍'];
+    let cards = emojis.concat(emojis);
+    cards.sort(() => 0.5 - Math.random());
+    let first = null, second = null, matched = 0, time = 60;
+
+    const board = document.getElementById("board");
+    const scoreDisplay = document.getElementById("score");
+    const resultText = document.getElementById("resultText");
+
+    cards.forEach((emoji, i) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.emoji = emoji;
+      card.dataset.index = i;
+      card.innerText = "";
+      card.addEventListener("click", () => flipCard(card));
+      board.appendChild(card);
+    });
+
+    function flipCard(card) {
+      if (card.classList.contains("flipped") || card.classList.contains("matched")) return;
+      card.classList.add("flipped");
+      card.innerText = card.dataset.emoji;
+
+      if (!first) {
+        first = card;
+      } else if (!second && card !== first) {
+        second = card;
+        if (first.dataset.emoji === second.dataset.emoji) {
+          first.classList.add("matched");
+          second.classList.add("matched");
+          matched++;
+          scoreDisplay.innerText = "Matches: " + matched;
+          first = second = null;
+          if (matched === emojis.length) endGame(true);
+        } else {
+          setTimeout(() => {
+            first.classList.remove("flipped");
+            second.classList.remove("flipped");
+            first.innerText = "";
+            second.innerText = "";
+            first = second = null;
+          }, 800);
+        }
+      }
+    }
+
+    function endGame(won) {
+      clearInterval(timer);
+      resultText.className = "result " + (won ? "winner" : "loser");
+      resultText.innerText = won ? "🎉 You Win!" : "😢 Time's up!";
+    }
+
+    const timer = setInterval(() => {
+      document.getElementById("timer").innerText = "⏳ Time: " + time-- + "s";
+      if (time < 0) endGame(false);
+    }, 1000);
+  </script>
+</body>
+</html>

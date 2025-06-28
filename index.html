@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎯 Spin & Play</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="loginForm">
+    <h2>Login to Start</h2>
+    <input type="text" id="username" placeholder="Enter your name" required/>
+    <input type="password" id="password" placeholder="Enter password" required/>
+    <button onclick="validateLogin()">Submit</button>
+    <p id="loginError" style="color:red;"></p>
+  </div>
+
+  <div id="gameWheel" style="display:none;">
+    <h1>🎲 Spin the Wheel & Play!</h1>
+    <div class="wheel-container">
+      <div id="wheel">
+        <div class="segment" style="transform: rotate(0deg); background: #FF6F61;">Guess</div>
+        <div class="segment" style="transform: rotate(72deg); background: #6B5B95;">Math</div>
+        <div class="segment" style="transform: rotate(144deg); background: #88B04B;">Color</div>
+        <div class="segment" style="transform: rotate(216deg); background: #FFA07A;">Typing</div>
+        <div class="segment" style="transform: rotate(288deg); background: #F7CAC9;">Memory</div>
+      </div>
+    </div>
+    <button onclick="spinWheel()">🎯 Spin</button>
+    <button id="playBtn" onclick="playGame()">▶️ Play</button>
+    <p id="chosenGame" style="font-size:1.2em; font-weight:bold; color:#000;"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

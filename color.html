@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Color Match</title></head>
+<body>
+<h2>Color Match</h2>
+<p>Click the color shown below!</p>
+<h3 id="targetColor"></h3>
+<div id="buttons"></div>
+<p id="score">Score: 0</p>
+<p id="timer"></p>
+<script>
+const colors = ["Red", "Blue", "Green", "Yellow", "Purple"];
+let score = 0, time = 45, target;
+
+function setColor() {
+  target = colors[Math.floor(Math.random() * colors.length)];
+  document.getElementById("targetColor").innerText = "Target: " + target;
+  let html = "";
+  colors.sort(() => 0.5 - Math.random()).forEach(color => {
+    html += `<button onclick="check('${color}')">${color}</button>`;
+  });
+  document.getElementById("buttons").innerHTML = html;
+}
+
+function check(color) {
+  if (color === target) score++;
+  document.getElementById("score").innerText = "Score: " + score;
+  setColor();
+}
+
+setColor();
+
+let interval = setInterval(() => {
+  document.getElementById("timer").innerText = "⏳ Time: " + time-- + "s";
+  if (time < 0) {
+    clearInterval(interval);
+    alert("⏱️ Time's up! Your score: " + score);
+  }
+}, 1000);
+</script>
+</body>
+</html>
